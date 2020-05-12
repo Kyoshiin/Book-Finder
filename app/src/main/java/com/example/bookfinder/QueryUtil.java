@@ -142,13 +142,13 @@ public class QueryUtil {
                 String title = volumeInfo.getString("title");
 
                 // Extract the value for the key called "authors"
-                JSONArray AuthorArray = volumeInfo.getJSONArray("authors");
+                //JSONArray AuthorArray = volumeInfo.getJSONArray("authors");
                 String author ="Anonymous";
-                author = AuthorArray.getString(0);
+                if (volumeInfo.has("authors"))
+                    author = volumeInfo.getJSONArray("authors").getString(0);
                 Log.v(LOG_TAG, "Name of authors: "+author);
 
-                // Create a new Book object with the magnitude, location, time,
-                // and url from the JSON response.
+                // Create a new Book object
                 Book book = new Book(title,author);
 
                 // Add the new Book to the list of Books.

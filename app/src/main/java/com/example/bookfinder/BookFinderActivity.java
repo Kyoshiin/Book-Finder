@@ -4,7 +4,11 @@ import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,8 +20,10 @@ public class BookFinderActivity extends AppCompatActivity
 
     private static final String LOG_TAG = BookFinderActivity.class.getName();
 
-    //URL for req book
-    private static final String REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=love&maxResults=40";
+    //Temp URL for req book
+    private String temp_url = "https://www.googleapis.com/books/v1/volumes?q=";
+    //Final URL
+    private String REQUEST_URL;
 
     //object for bookadater
     BookAdapter adapter;
@@ -34,14 +40,45 @@ public class BookFinderActivity extends AppCompatActivity
         ListView search_result = (ListView)findViewById(R.id.search_result);
         search_result.setAdapter(adapter);
 
-        //Toast.makeText(this,"Fetching books..",Toast.LENGTH_SHORT).show();
+        //EditText to input search item
+        final EditText search_key = (EditText)findViewById(R.id.search_key);
+
         //creating connection on background thread
-        LoaderManager loaderManager = getLoaderManager();
+        final LoaderManager loaderManager = getLoaderManager();
 
         // Initialize the loader. Pass in any int ID (since using only 1),pass in null for
         // the bundle. Pass in this activity for the LoaderCallbacks parameter
-        loaderManager.initLoader(1, null, this);
+        loaderManager.initLoader(1, null, BookFinderActivity.this);
 
+        //Button for start searching
+        findViewById(R.id.searchbtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String search_input = search_key.getText().toString();
+                //functio to form the final search input URL
+                formatInputSearch(search_input);
+                search_key.setText(search_input); // to display the input text
+
+
+                Toast.makeText(getApplicationContext(),"Fetching books..", Toast.LENGTH_SHORT).show();
+                //for restarting loader when new search item is given
+                loaderManager.restartLoader(1,null,BookFinderActivity.this);
+
+            }
+        });
+    }
+
+    private void formatInputSearch(String search_input) {
+
+        //removing additional trailing spaces
+        search_input = search_input.trim();
+        //replacing space with '+'
+        search_input = search_input.replaceAll("\\s+","+");
+
+        //storing the final url
+        REQUEST_URL = temp_url+search_input+"&maxResults=25&orderBy=newest";
+
+        Log.v(LOG_TAG, "Input URL "+REQUEST_URL);
     }
 
     @Override
