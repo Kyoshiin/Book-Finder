@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <EditText
+        android:id="@+id/search_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter title, author or name of book"
+        android:inputType="textLongMessage|number|textPersonName"
+        android:textSize="20dp" />
+
+    <ListView
+        android:id="@+id/search_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp">
+
+    </ListView>
+
+</LinearLayout>
