@@ -2,12 +2,18 @@ package com.example.bookfinder;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,14 +40,28 @@ public class BookFinderActivity extends AppCompatActivity
         setContentView(R.layout.search_books);
 
         //custom adapter taking empty set on books
-        adapter = new BookAdapter(this,new ArrayList<Book>());
+        adapter = new BookAdapter(this, new ArrayList<Book>());
 
         //List view to display result
-        ListView search_result = (ListView)findViewById(R.id.search_result);
+        ListView search_result = (ListView) findViewById(R.id.search_result);
         search_result.setAdapter(adapter);
 
+        search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //storing the selected book
+                Book currentBook = adapter.getItem(position);
+
+                //creating intent
+                Intent details_intent = new Intent(getApplicationContext(),BookDetailsActivity.class);
+                //sending current selected book to details activity
+                details_intent.putExtra("Book",currentBook);
+                startActivity(details_intent);
+            }
+        });
+
         //EditText to input search item
-        final EditText search_key = (EditText)findViewById(R.id.search_key);
+        final EditText search_key = (EditText) findViewById(R.id.search_key);
 
         //creating connection on background thread
         final LoaderManager loaderManager = getLoaderManager();
@@ -50,35 +70,47 @@ public class BookFinderActivity extends AppCompatActivity
         // the bundle. Pass in this activity for the LoaderCallbacks parameter
         loaderManager.initLoader(1, null, BookFinderActivity.this);
 
-        //Button for start searching
-        findViewById(R.id.searchbtn).setOnClickListener(new View.OnClickListener() {
+        //start searching when search key is pressed on keyboard
+        search_key.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                String search_input = search_key.getText().toString();
-                //functio to form the final search input URL
-                formatInputSearch(search_input);
-                search_key.setText(search_input); // to display the input text
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //remove focus from editText (cursor)
+                    search_key.clearFocus();
+
+                    //to remove keyboard
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+
+                    String search_input = search_key.getText().toString();
+                    //functio to form the final search input URL
+                    formatInputSearch(search_input);
+                    search_key.setText(search_input); // to display the input text
 
 
-                Toast.makeText(getApplicationContext(),"Fetching books..", Toast.LENGTH_SHORT).show();
-                //for restarting loader when new search item is given
-                loaderManager.restartLoader(1,null,BookFinderActivity.this);
+                    Toast.makeText(getApplicationContext(), "Fetching books..", Toast.LENGTH_SHORT).show();
+                    //for restarting loader when new search item is given
+                    loaderManager.restartLoader(1, null, BookFinderActivity.this);
 
+                    return true;
+                }
+                return false;
             }
         });
     }
 
+    //method for formatting input to URL
     private void formatInputSearch(String search_input) {
 
         //removing additional trailing spaces
         search_input = search_input.trim();
         //replacing space with '+'
-        search_input = search_input.replaceAll("\\s+","+");
+        search_input = search_input.replaceAll("\\s+", "+");
 
         //storing the final url
-        REQUEST_URL = temp_url+search_input+"&maxResults=25&orderBy=newest";
+        REQUEST_URL = temp_url + search_input + "&maxResults=30&filter=ebooks&langRestrict=en&printType=books";
 
-        Log.v(LOG_TAG, "Input URL "+REQUEST_URL);
+        Log.v(LOG_TAG, "Input URL " + REQUEST_URL);
     }
 
     @Override
@@ -100,10 +132,10 @@ public class BookFinderActivity extends AppCompatActivity
         }
     }
 
-        @Override
-        public void onLoaderReset (Loader < List < Book >> loader) {
-            // Loader reset, so we can clear out our existing data.
-            adapter.clear();
+    @Override
+    public void onLoaderReset(Loader<List<Book>> loader) {
+        // Loader reset, so we can clear out our existing data.
+        adapter.clear();
 
-        }
     }
+}

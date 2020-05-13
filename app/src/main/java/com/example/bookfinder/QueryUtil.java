@@ -78,10 +78,10 @@ public class QueryUtil {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                //Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            //Log.e(LOG_TAG, "Problem retrieving the Book JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the Book JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -146,7 +146,57 @@ public class QueryUtil {
                 String author ="Anonymous";
                 if (volumeInfo.has("authors"))
                     author = volumeInfo.getJSONArray("authors").getString(0);
-                Log.v(LOG_TAG, "Name of authors: "+author);
+                //Log.v(LOG_TAG, "Name of authors: "+author);
+
+                // Extract the value for the key called "publisher"
+                String publisher ="";
+                if (volumeInfo.has("publisher"))
+                    publisher = volumeInfo.getString("publisher");
+
+                // Extract the value for the key called "description"
+                String description ="";
+                if (volumeInfo.has("description"))
+                    description = volumeInfo.getString("description");
+
+                // Extract the value for the key called "pages"
+                int pageCount = 0;
+                if (volumeInfo.has("pageCount"))
+                    pageCount = volumeInfo.getInt("pageCount");
+
+                // Extract the value for the key called "averagerating"
+                double rating = 0.0;
+                if (volumeInfo.has("averageRating"))
+                    rating = volumeInfo.getDouble("averageRating");
+
+                // Extract the value for the key called "categories"
+                String categories ="";
+                if (volumeInfo.has("categories"))
+                    categories = volumeInfo.getJSONArray("categories").getString(0);
+
+                // Extract the value for the key called "imagelink"
+                String imagelink ="";
+                if (volumeInfo.has("imageLinks"))
+                    imagelink = volumeInfo.getJSONObject("imageLinks").getString("thumbnail");
+
+
+                // For a given Book, extract the JSONObject associated with the key called "saleInfo"
+                JSONObject saleInfo = currentBook.getJSONObject("saleInfo");
+
+                // Extract the value for the key called "retailPrice"
+                double price = 0.0;
+                if (saleInfo.has("retailPrice"))
+                    price = saleInfo.getJSONObject("retailPrice").getDouble("amount");
+
+
+                // For a given Book, extract the JSONObject associated with the key called "accessInfo"
+                JSONObject accessInfo = currentBook.getJSONObject("accessInfo");
+
+                // Extract the value for the key called "previrelink"
+                String previewlink ="";
+                if (volumeInfo.has("webReaderLink"))
+                    previewlink = accessInfo.getString("webReaderLink");
+
+
 
                 // Create a new Book object
                 Book book = new Book(title,author);
