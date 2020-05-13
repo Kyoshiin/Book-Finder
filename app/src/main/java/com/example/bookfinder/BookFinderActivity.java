@@ -2,12 +2,18 @@ package com.example.bookfinder;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,24 +56,36 @@ public class BookFinderActivity extends AppCompatActivity
         // the bundle. Pass in this activity for the LoaderCallbacks parameter
         loaderManager.initLoader(1, null, BookFinderActivity.this);
 
-        //Button for start searching
-        findViewById(R.id.searchbtn).setOnClickListener(new View.OnClickListener() {
+        //start searching when search key is pressed on keyboard
+        search_key.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                String search_input = search_key.getText().toString();
-                //functio to form the final search input URL
-                formatInputSearch(search_input);
-                search_key.setText(search_input); // to display the input text
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //remove focus from editText (cursor)
+                    search_key.clearFocus();
+
+                    //to remove keyboard
+                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+
+                    String search_input = search_key.getText().toString();
+                    //functio to form the final search input URL
+                    formatInputSearch(search_input);
+                    search_key.setText(search_input); // to display the input text
 
 
-                Toast.makeText(getApplicationContext(),"Fetching books..", Toast.LENGTH_SHORT).show();
-                //for restarting loader when new search item is given
-                loaderManager.restartLoader(1,null,BookFinderActivity.this);
+                    Toast.makeText(getApplicationContext(),"Fetching books..", Toast.LENGTH_SHORT).show();
+                    //for restarting loader when new search item is given
+                    loaderManager.restartLoader(1,null,BookFinderActivity.this);
 
+                    return true;
+                }
+                return false;
             }
         });
     }
 
+    //method for formatting input to URL
     private void formatInputSearch(String search_input) {
 
         //removing additional trailing spaces
@@ -76,7 +94,7 @@ public class BookFinderActivity extends AppCompatActivity
         search_input = search_input.replaceAll("\\s+","+");
 
         //storing the final url
-        REQUEST_URL = temp_url+search_input+"&maxResults=25&orderBy=newest";
+        REQUEST_URL = temp_url+search_input+"&maxResults=30&filter=ebooks&langRestrict=en";
 
         Log.v(LOG_TAG, "Input URL "+REQUEST_URL);
     }
@@ -106,4 +124,22 @@ public class BookFinderActivity extends AppCompatActivity
             adapter.clear();
 
         }
+
+        //for settings activity on action bar
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.main, menu);
+            return true;
+        }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
+}
