@@ -157,6 +157,13 @@ public class QueryUtil {
                 if (volumeInfo.has("description"))
                     description = volumeInfo.getString("description");
 
+                // Extract the value for the key called "previewLink"
+                String previewlink ="";
+                if (volumeInfo.has("previewLink"))
+                    previewlink = volumeInfo.getString("previewLink");
+
+                //Log.v(LOG_TAG, "Book Details: "+previewlink);
+
                 // Extract the value for the key called "pages"
                 int pageCount = 0;
                 if (volumeInfo.has("pageCount"))
@@ -185,18 +192,6 @@ public class QueryUtil {
                 double price = 0.0;
                 if (saleInfo.has("retailPrice"))
                     price = saleInfo.getJSONObject("retailPrice").getDouble("amount");
-
-
-                // For a given Book, extract the JSONObject associated with the key called "accessInfo"
-                JSONObject accessInfo = currentBook.getJSONObject("accessInfo");
-
-                // Extract the value for the key called "previrelink"
-                String previewlink ="nei";
-                if (accessInfo.has("webReaderLink"))
-                    previewlink = accessInfo.getString("webReaderLink");
-
-
-                //Log.v(LOG_TAG, "Book Details: "+imagelink);
 
 
                 // Create a new Book object

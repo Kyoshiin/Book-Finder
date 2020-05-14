@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:hint="Enter title, author or name of book"
         android:inputType="textLongMessage|textPersonName"
-        android:textSize="20dp"
+        android:textSize="@dimen/Medium"
         android:imeOptions="actionSearch"/>
 
     <ListView

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="imgSize">100dp</dimen>
+    <dimen name="Large">24sp</dimen>
+    <dimen name="Medium">20sp</dimen>
+    <dimen name="Small">15sp</dimen>
 </resources>
