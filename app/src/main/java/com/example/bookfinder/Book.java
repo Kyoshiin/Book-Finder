@@ -56,7 +56,7 @@ public class Book implements Serializable {
     }
 
     // method to get book author
-    public String getAuthorName(){
+    public String getBookAuthorName(){
         return mAuthor;
     }
 
@@ -96,7 +96,7 @@ public class Book implements Serializable {
     }
 
     // method to get book preview
-    public String getpreviewUrl(){
+    public String getBookpreviewUrl(){
         return mPreview;
     }
     

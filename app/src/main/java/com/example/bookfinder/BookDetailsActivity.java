@@ -1,20 +1,99 @@
 package com.example.bookfinder;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import com.squareup.picasso.Picasso;
 
 public class BookDetailsActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = BookDetailsActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_details);
 
-        Book selectd_book = (Book)getIntent().getSerializableExtra("Book");
+        Book selectd_book = (Book) getIntent().getSerializableExtra("Book");
 
-        TextView txt =  findViewById(R.id.text_view);
-        txt.setText(""+selectd_book.getBookName());
+        ImageView bookimage = findViewById(R.id.BookImg);
+        //setting visibility if info not available
+        if (TextUtils.isEmpty(selectd_book.getBookImg()))
+            bookimage.setVisibility(View.GONE);
+        else {
+            //displaying image from url using picasso
+            String imageURL = selectd_book.getBookImg();
+            //making http -> https as picasso not http
+            if (imageURL.charAt(4)!= 's')
+                imageURL = imageURL.substring(0,4)+'s'+imageURL.substring(4);
+            Picasso.get().load(imageURL).into(bookimage);
+        }
+
+
+        TextView bookname =(TextView) findViewById(R.id.Book_name);
+        bookname.setText(selectd_book.getBookName());
+
+        TextView authorname = findViewById(R.id.BookAuthorname);
+        //setting visibility if info not available
+        if (TextUtils.isEmpty(selectd_book.getBookAuthorName()))
+            authorname.setVisibility(View.GONE);
+        else{
+            //Log.v(LOG_TAG,"Author name: "+authorname.getClass().getName());
+           authorname.setText(selectd_book.getBookAuthorName());}
+
+        TextView bookpublisher = findViewById(R.id.Bookpublisher);
+        //setting visibility if info not available
+        if (selectd_book.getBookPublisher().compareTo("")==0)
+            bookpublisher.setVisibility(View.GONE);
+        else
+            bookpublisher.setText(selectd_book.getBookPublisher());
+
+        TextView bookprice = findViewById(R.id.Bookprice);
+        //setting visibility if info not available
+        if (selectd_book.getBookPrice() == 0.0)
+            bookprice.setVisibility(View.GONE);
+        else
+        bookprice.setText("Price: Rs. " +Double.toString(selectd_book.getBookPrice()));
+
+        TextView bookrating = findViewById(R.id.Bookrating);
+        //setting visibility if info not available
+        if (selectd_book.getBookRating() == 0.0)
+            bookrating.setVisibility(View.GONE);
+        else
+            bookrating.setText("Rating: "+ Double.toString(selectd_book.getBookRating())+ " out of 5");
+
+        TextView bookpages = findViewById(R.id.Bookpages);
+        //setting visibility if info not available
+        if (selectd_book.getBookPages() == 0)
+            bookpages.setVisibility(View.GONE);
+        else
+            bookpages.setText("Pages: "+Integer.toString(selectd_book.getBookPages()));
+
+        TextView bookdesc = findViewById(R.id.Bookdescription);
+        //setting visibility if info not available
+        if (TextUtils.isEmpty(selectd_book.getBookDescription()))
+            bookdesc.setVisibility(View.GONE);
+        else
+            bookdesc.setText(selectd_book.getBookDescription());
+
+        TextView bookcategory = findViewById(R.id.Bookcategories);
+        //setting visibility if info not available
+        if (TextUtils.isEmpty(selectd_book.getBookCategory()))
+            bookcategory.setVisibility(View.GONE);
+        else
+            bookcategory.setText(selectd_book.getBookCategory());
+
+        TextView bookpreview = findViewById(R.id.Bookpreview);
+        //setting visibility if info not available
+        if (TextUtils.isEmpty(selectd_book.getBookpreviewUrl()))
+            bookpreview.setVisibility(View.GONE);
+        else {
+            Log.v(LOG_TAG,"preview URL: "+selectd_book.getBookpreviewUrl());
+            bookpreview.setText(selectd_book.getBookpreviewUrl());
+        }
     }
 }

@@ -146,7 +146,6 @@ public class QueryUtil {
                 String author ="Anonymous";
                 if (volumeInfo.has("authors"))
                     author = volumeInfo.getJSONArray("authors").getString(0);
-                //Log.v(LOG_TAG, "Name of authors: "+author);
 
                 // Extract the value for the key called "publisher"
                 String publisher ="";
@@ -192,14 +191,17 @@ public class QueryUtil {
                 JSONObject accessInfo = currentBook.getJSONObject("accessInfo");
 
                 // Extract the value for the key called "previrelink"
-                String previewlink ="";
-                if (volumeInfo.has("webReaderLink"))
+                String previewlink ="nei";
+                if (accessInfo.has("webReaderLink"))
                     previewlink = accessInfo.getString("webReaderLink");
 
 
+                //Log.v(LOG_TAG, "Book Details: "+imagelink);
+
 
                 // Create a new Book object
-                Book book = new Book(title,author);
+                Book book = new Book(title,author,imagelink,price,rating,pageCount,categories,previewlink,
+                        publisher,description);
 
                 // Add the new Book to the list of Books.
                 books.add(book);

@@ -108,7 +108,7 @@ public class BookFinderActivity extends AppCompatActivity
         search_input = search_input.replaceAll("\\s+", "+");
 
         //storing the final url
-        REQUEST_URL = temp_url + search_input + "&maxResults=30&filter=ebooks&langRestrict=en&printType=books";
+        REQUEST_URL = temp_url + search_input + "&maxResults=8&filter=ebooks&langRestrict=en&printType=books";
 
         Log.v(LOG_TAG, "Input URL " + REQUEST_URL);
     }

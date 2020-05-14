@@ -33,7 +33,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
 
         TextView authorname = (TextView) listItemView.findViewById(R.id.Authorname);
-        authorname.setText(""+currentBook.getAuthorName());
+        authorname.setText(""+currentBook.getBookAuthorName());
 
         return listItemView;
     }
