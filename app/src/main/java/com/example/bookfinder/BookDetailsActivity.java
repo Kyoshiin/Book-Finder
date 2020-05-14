@@ -39,7 +39,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         bookname.setText(selectd_book.getBookName());
 
         TextView authorname = findViewById(R.id.BookAuthorname);
-        authorname.setText(selectd_book.getBookAuthorName());
+        authorname.setText("by "+selectd_book.getBookAuthorName());
 
         TextView bookpublisher = findViewById(R.id.Bookpublisher);
         //setting visibility if info not available
@@ -60,7 +60,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         if (selectd_book.getBookRating() == 0.0)
             bookrating.setVisibility(View.GONE);
         else
-            bookrating.setText("Rating: "+ Double.toString(selectd_book.getBookRating())+ " out of 5");
+            bookrating.setText("Rating: "+ Double.toString(selectd_book.getBookRating())+ " out of 5.0");
 
         TextView bookpages = findViewById(R.id.Bookpages);
         //setting visibility if info not available
@@ -71,8 +71,9 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         TextView bookdesc = findViewById(R.id.Bookdescription);
         //setting visibility if info not available
-        if (TextUtils.isEmpty(selectd_book.getBookDescription()))
+        if (TextUtils.isEmpty(selectd_book.getBookDescription())){
             bookdesc.setVisibility(View.GONE);
+            findViewById(R.id.about).setVisibility(View.GONE);}
         else
             bookdesc.setText(selectd_book.getBookDescription());
 
@@ -89,7 +90,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             bookpreview.setVisibility(View.GONE);
         else {
             //Log.v(LOG_TAG,"preview URL: "+selectd_book.getBookpreviewUrl());
-            bookpreview.setText(selectd_book.getBookpreviewUrl()+"\t"+" Click here to preview");
+            bookpreview.setText(selectd_book.getBookpreviewUrl()+"\n"+"Click here to preview");
         }
     }
 }

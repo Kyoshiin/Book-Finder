@@ -3,4 +3,5 @@
     <dimen name="Large">24sp</dimen>
     <dimen name="Medium">20sp</dimen>
     <dimen name="Small">15sp</dimen>
+    <dimen name="editboxpadding">8dp</dimen>
 </resources>

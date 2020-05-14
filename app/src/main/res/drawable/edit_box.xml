@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners
+        android:radius="20dp"/>
+    <stroke
+        android:width="2dp"
+        android:color="@color/colorPrimary" />
+
+<!--    for fill colour-->
+    <solid
+        android:color="@android:color/white"/>
+
+    <padding
+        android:bottom="@dimen/editboxpadding"
+        android:left="@dimen/editboxpadding"
+        android:right="@dimen/editboxpadding"
+        android:top="@dimen/editboxpadding"/>
+
+
+</shape>

@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/BookImg"
-            android:layout_width="150dp"
-            android:layout_height="300dp"
+            android:layout_width="192dp"
+            android:layout_height="248dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:scaleType="centerCrop"
@@ -51,12 +51,12 @@
                 tools:text="Book publisher Name: " />
 
             <TextView
+                android:id="@+id/about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="about the book"
-                android:textSize="@dimen/Medium"
-                android:textAllCaps="true"/>
+                android:text="About the book"
+                android:textSize="@dimen/Medium"/>
 
             <TextView
                 android:id="@+id/Bookdescription"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/Small"
                 tools:text="Book Description: "
-                />
+                android:background="@drawable/edit_box"/>
 
             <TextView
                 android:id="@+id/Bookcategories"

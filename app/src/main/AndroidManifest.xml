@@ -13,8 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".BookDetailsActivity"
-            android:label="Details"
-            android:parentActivityName=".BookFinderActivity">
+            android:label="Details">
 
         </activity>
         <activity android:name=".BookFinderActivity">
