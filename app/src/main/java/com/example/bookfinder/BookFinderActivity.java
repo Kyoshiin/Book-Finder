@@ -26,6 +26,10 @@ public class BookFinderActivity extends AppCompatActivity
 
     private static final String LOG_TAG = BookFinderActivity.class.getName();
 
+    private EditText search_key;
+
+    private LoaderManager loaderManager;
+
     //Temp URL for req book
     private String temp_url = "https://www.googleapis.com/books/v1/volumes?q=";
     //Final URL
@@ -38,6 +42,18 @@ public class BookFinderActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_books);
+
+        //EditText to input search item
+        search_key = (EditText) findViewById(R.id.search_key);
+
+        //creating connection on background thread
+        loaderManager = getLoaderManager();
+
+        // Get the Intent that started this activity and extract the string
+        Intent intent = getIntent();
+        final String searched_book  = intent.getStringExtra("searched_books");
+        Log.v(LOG_TAG,"intent seaarch: "+searched_book);
+        createSearch(searched_book);
 
         //custom adapter taking empty set on books
         adapter = new BookAdapter(this, new ArrayList<Book>());
@@ -60,11 +76,6 @@ public class BookFinderActivity extends AppCompatActivity
             }
         });
 
-        //EditText to input search item
-        final EditText search_key = (EditText) findViewById(R.id.search_key);
-
-        //creating connection on background thread
-        final LoaderManager loaderManager = getLoaderManager();
 
         // Initialize the loader. Pass in any int ID (since using only 1),pass in null for
         // the bundle. Pass in this activity for the LoaderCallbacks parameter
@@ -83,20 +94,35 @@ public class BookFinderActivity extends AppCompatActivity
                     inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
 
                     String search_input = search_key.getText().toString();
-                    //functio to form the final search input URL
-                    formatInputSearch(search_input);
-                    search_key.setText(search_input); // to display the input text
 
-
-                    Toast.makeText(getApplicationContext(), "Fetching books..", Toast.LENGTH_SHORT).show();
-                    //for restarting loader when new search item is given
-                    loaderManager.restartLoader(1, null, BookFinderActivity.this);
+                    //starting search for another book
+                    createSearch(search_input);
+//                    //functio to form the final search input URL
+//                    formatInputSearch(search_input);
+//                    search_key.setText(search_input); // to display the input text
+//
+//
+//                    Toast.makeText(getApplicationContext(), "Fetching books..", Toast.LENGTH_SHORT).show();
+//                    //for restarting loader when new search item is given
+//                    loaderManager.restartLoader(1, null, BookFinderActivity.this);
 
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    //method to start the searching process
+    private void createSearch(String searched_book) {
+        //functio to form the final search input URL
+        formatInputSearch(searched_book);
+        search_key.setText(searched_book); // to display the input text
+
+
+        Toast.makeText(getApplicationContext(), "Fetching books..", Toast.LENGTH_SHORT).show();
+        //for restarting loader when new search item is given
+        loaderManager.restartLoader(1, null, BookFinderActivity.this);
     }
 
     //method for formatting input to URL
@@ -113,6 +139,8 @@ public class BookFinderActivity extends AppCompatActivity
         Log.v(LOG_TAG, "Input URL " + REQUEST_URL);
     }
 
+
+    //LOADER  METHODS
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
         //Toast.makeText(this,"Fetching books",Toast.LENGTH_SHORT).show();

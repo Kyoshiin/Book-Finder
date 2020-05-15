@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/general_background"
     android:padding="8dp">
+
 
     <EditText
         android:id="@+id/search_key"
+        android:background="@drawable/edit_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter title, author or name of book"
@@ -20,8 +23,7 @@
         android:id="@+id/search_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp">
+        android:isScrollContainer="false">
 
     </ListView>
 </LinearLayout>
