@@ -1,5 +1,7 @@
 package com.example.bookfinder;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -92,5 +94,20 @@ public class BookDetailsActivity extends AppCompatActivity {
             //Log.v(LOG_TAG,"preview URL: "+selectd_book.getBookpreviewUrl());
             bookpreview.setText(selectd_book.getBookpreviewUrl()+"\n"+"Click here to preview");
         }
+
+        //FOR FEEDBACK
+        findViewById(R.id.feedback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Uri feedbackUri = Uri.parse("https://forms.gle/Y6bk2BqMEpZVwjC46");
+
+                // Create a new intent to view the earthquake URI
+                Intent feedbackIntent = new Intent(Intent.ACTION_VIEW, feedbackUri);
+
+                // Send the intent to launch a new activity
+                startActivity(feedbackIntent);
+            }
+        });
     }
 }

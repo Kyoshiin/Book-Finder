@@ -24,7 +24,7 @@
         android:id="@+id/Authorname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/Small"
+        android:textSize="15sp"
         android:gravity="top"
         tools:text="Anne Frank"/>
 </LinearLayout>
