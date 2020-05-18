@@ -1,49 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:background="@drawable/general_background"
-    android:padding="8dp">
+    android:orientation="vertical">
 
-
-    <EditText
-        android:id="@+id/search_key"
-        android:background="@drawable/edit_box"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter title, author or name of book"
-        android:inputType="textLongMessage|textPersonName"
-        android:textSize="@dimen/Medium"
-        android:imeOptions="actionSearch"/>
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp">
+        <EditText
+            android:id="@+id/search_key"
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="wrap_content"
+            android:hint="Enter your search"
+            android:imeOptions="actionSearch"
+            android:inputType="textLongMessage|textAutoCorrect|textPersonName|textAutoComplete"
+            android:textSize="@dimen/Small"
+            android:background="@drawable/edit_box"/>
+
+        <ImageView
+            android:id="@+id/preferbox"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_filter" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/search_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:isScrollContainer="false"/>
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:isScrollContainer="false"
+        android:padding="4dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- Empty view is only visible when the list has no items. -->
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:fontFamily="@font/headings"
-        android:textSize="@dimen/Medium"/>
+        <!-- Empty view is only visible when the list has no items. -->
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/headings"
+            android:textSize="24sp" />
 
-    <!-- Loading indicator is only shown before the first load -->
-    <ProgressBar
-        android:id="@+id/loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        <!-- Loading indicator is only shown before the first load -->
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 </LinearLayout>

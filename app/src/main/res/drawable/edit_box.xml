@@ -11,8 +11,8 @@
         android:color="@android:color/white"/>
 
     <padding
-        android:bottom="@dimen/editboxpadding"
+        android:bottom="4dp"
         android:left="10dp"
-        android:top="@dimen/editboxpadding"/>
+        android:top="4dp"/>
 
 </shape>

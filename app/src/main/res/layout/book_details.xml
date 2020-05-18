@@ -11,21 +11,28 @@
         tools:context=".BookDetailsActivity"
         android:padding="8dp">
 
-        <ImageView
+        <TextView
             android:id="@+id/feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_feedback"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_feedback"
+            android:text=" Send Feedback"
+            android:background="#DCBD84"
+            android:padding="2dp"
+            android:textStyle="bold"
             android:layout_alignParentRight="true"/>
 
+<!--        192 x 248-->
         <ImageView
             android:id="@+id/BookImg"
-            android:layout_width="192dp"
-            android:layout_height="248dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:adjustViewBounds="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background" />
+            android:layout_marginTop="50dp"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/egbook"/>
 
         <LinearLayout
             android:id="@+id/details_layout"

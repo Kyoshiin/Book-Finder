@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Book Finder</string>
     <string name="no_internet_connection">Oops! No internet connection!</string>
+    <string name="no_books">Sorry no books found</string>
 </resources>

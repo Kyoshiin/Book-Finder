@@ -14,7 +14,7 @@
         android:src="@drawable/ic_display"
         android:scaleType="centerInside"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"/>
+        android:layout_marginTop="70dp"/>
 
     <TextView
         android:id="@+id/appname"
@@ -22,11 +22,12 @@
         android:layout_height="wrap_content"
         android:text="BOOK FINDER"
         android:textColor="@android:color/white"
-        android:textSize="48dp"
+        android:textSize="45sp"
         android:fontFamily="@font/headings"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="55dp"
         android:layout_below="@id/icon"
         android:layout_centerHorizontal="true"/>
+
     <EditText
         android:id="@+id/starting_search"
         android:layout_width="310dp"
@@ -35,9 +36,10 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/appname"
         android:layout_marginTop="75dp"
-        android:hint="Enter Your Search"
-        android:inputType="textLongMessage|textPersonName"
-        android:textSize="@dimen/Medium"
-        android:imeOptions="actionSearch"/>
+        android:hint="Enter your search"
+        android:inputType="textLongMessage|textAutoCorrect|textPersonName|textAutoComplete"
+        android:textSize="@dimen/Small"
+        android:imeOptions="actionSearch"
+        android:padding="8dp"/>
 
 </RelativeLayout>

@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
 
                     String input = search.getText().toString();
+                    search.setText("");
 
                     //creating intent to call bookfinder activity
                     Intent search_intent = new Intent(getApplicationContext(),BookFinderActivity.class);

@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -28,12 +31,21 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         Book currentBook = getItem(position);
 
+        //adding book names to the list
         TextView bookname = (TextView) listItemView.findViewById(R.id.Bookname);
         bookname.setText(""+currentBook.getBookName());
 
-
+        //adding author name
         TextView authorname = (TextView) listItemView.findViewById(R.id.Authorname);
         authorname.setText(""+currentBook.getBookAuthorName());
+
+        //adding picture
+        ImageView bookimage_list = listItemView.findViewById(R.id.BookImage);
+        String imageURL = currentBook.getBookImg();
+        //making http -> https as picasso not http
+        if (imageURL.charAt(4)!= 's')
+            imageURL = imageURL.substring(0,4)+'s'+imageURL.substring(4);
+        Picasso.get().load(imageURL).into(bookimage_list);
 
         return listItemView;
     }

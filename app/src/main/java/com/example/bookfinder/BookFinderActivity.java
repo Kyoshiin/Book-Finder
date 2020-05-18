@@ -8,6 +8,8 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookFinderActivity extends AppCompatActivity
-        implements LoaderCallbacks<List<Book>> {
+        implements LoaderCallbacks<List<Book>>, SearchPreferenceDialog.PreferenceDialogListner {
 
     private static final String LOG_TAG = BookFinderActivity.class.getName();
 
@@ -34,10 +36,16 @@ public class BookFinderActivity extends AppCompatActivity
     //TextView that is displayed when the list is empty
     private TextView mEmptyStateTextView;
 
-    //Temp URL for req book
-    private String temp_url = "https://www.googleapis.com/books/v1/volumes?q=";
+    //current Searched
+    private String currentSearch;
     //Final URL
     private String REQUEST_URL;
+
+    // to set preference to search by author or title
+    private String mPreference="";
+
+    // to set max results
+    private String mMaxResults="";
 
     //object for bookadater
     BookAdapter adapter;
@@ -53,20 +61,27 @@ public class BookFinderActivity extends AppCompatActivity
         //creating connection on background thread
         loaderManager = getLoaderManager();
 
+        //creating List view to display result
+        ListView search_result = (ListView) findViewById(R.id.search_result);
+
+        //creating textview to display error msg
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        search_result.setEmptyView(mEmptyStateTextView);
+
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        final String searched_book  = intent.getStringExtra("searched_books");
-        //Log.v(LOG_TAG,"intent seaarch: "+searched_book);
-        createSearch(searched_book);
+        currentSearch  = intent.getStringExtra("searched_books");
+
+        //creating a search for req from MainActivity
+        CreateSearch();
 
         //custom adapter taking empty set on books
         adapter = new BookAdapter(this, new ArrayList<Book>());
 
-        //List view to display result
-        ListView search_result = (ListView) findViewById(R.id.search_result);
-
+        //setting adapter on the search result listview
         search_result.setAdapter(adapter);
 
+        //setting on itemClick of search_result listview
         search_result.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,27 +109,40 @@ public class BookFinderActivity extends AppCompatActivity
                     //remove focus from editText (cursor)
                     search_key.clearFocus();
 
-                    //to remove keyboard
+                    //to remove keyboard after pressing search icon in keyboard
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
 
-                    String search_input = search_key.getText().toString();
-
+                    //updating the current search query
+                    currentSearch = search_key.getText().toString();
+                    //clearing adapter for next searches only via edit text
+                    adapter.clear();
                     //starting search for another book
-                    createSearch(search_input);
+                    CreateSearch();
                     return true;
                 }
                 return false;
             }
         });
+
+        //preference icon onclick listner
+        findViewById(R.id.preferbox).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //opening preference dialog box
+
+                SearchPreferenceDialog dialog = new SearchPreferenceDialog();
+                dialog.show(getSupportFragmentManager(),"preferencedialog");
+            }
+        });
     }
 
     //method to start the searching process
-    private void createSearch(String searched_book) {
+    private void CreateSearch() {
 
         //function to form the final search input URL
-        formatInputSearch(searched_book);
-        search_key.setText(searched_book); // to display the input text
+        formatInputSearch(currentSearch);
+        search_key.setText(currentSearch); // to display the input text
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -135,7 +163,6 @@ public class BookFinderActivity extends AppCompatActivity
             loadingIndicator.setVisibility(View.GONE);
 
             // Update empty state with no connection error message
-            mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
@@ -149,13 +176,14 @@ public class BookFinderActivity extends AppCompatActivity
         search_input = search_input.replaceAll("\\s+", "+");
 
         //storing the final url
-        REQUEST_URL = temp_url + search_input + "&maxResults=40&filter=ebooks&langRestrict=en&printType=books";
+        REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q="+ mPreference + search_input + "&filter=ebooks&" +
+                "langRestrict=en&printType=books"+mMaxResults;
 
-        //Log.v(LOG_TAG, "Input URL " + REQUEST_URL);
+        Log.v(LOG_TAG, "Input URL " + REQUEST_URL);
     }
 
 
-    //LOADER  METHODS
+    /**LOADER  METHODS*/
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
         return new BookLoader(this, REQUEST_URL);
@@ -168,13 +196,18 @@ public class BookFinderActivity extends AppCompatActivity
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
-        // Clear the adapter of previous earthquake data
-        adapter.clear();
-
-        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // If there is a valid list of books, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (books != null && !books.isEmpty()) {
+            /** Clear the adapter of previous book data only when new search is performed
+             * via preference or mainActivity
+             */
+            adapter.clear();
             adapter.addAll(books);
+        }
+        else{
+            // Set empty state text to display "No books found."
+            mEmptyStateTextView.setText(R.string.no_books);
         }
     }
 
@@ -182,5 +215,29 @@ public class BookFinderActivity extends AppCompatActivity
     public void onLoaderReset(Loader<List<Book>> loader) {
         // Loader reset, so we can clear out our existing data.
         adapter.clear();
+    }
+
+
+    /**implementiong preference interface method of searchpreferenceDialog
+     *
+     * @param Preference
+     * @param maxresults
+     */
+    @Override
+    public void setPreference(String Preference, String maxresults) {
+        //editing according to url
+        if (TextUtils.isEmpty(Preference))
+            mPreference="";
+        else
+        mPreference = "in"+Preference+":";
+
+        if (TextUtils.isEmpty(maxresults))
+            mMaxResults="";
+        else
+        mMaxResults ="&maxResults=" +maxresults;
+
+        //creating a search for exiting search query
+        // with updated preference
+        CreateSearch();
     }
 }
