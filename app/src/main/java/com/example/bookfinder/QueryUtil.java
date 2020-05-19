@@ -26,6 +26,7 @@ public class QueryUtil {
     {}
 
     public static List<Book> fetchBookData(String requestUrl) {
+
         // Create URL object
         URL url = createUrl(requestUrl);
 
