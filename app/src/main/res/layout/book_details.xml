@@ -21,7 +21,8 @@
             android:background="#DCBD84"
             android:padding="2dp"
             android:textStyle="bold"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"/>
 
 <!--        192 x 248-->
         <ImageView
@@ -29,23 +30,24 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:adjustViewBounds="true"
+            android:layout_below="@id/feedback"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+
             android:scaleType="fitCenter"
-            tools:src="@drawable/egbook"/>
+            tools:src="@drawable/ic_display"/>
 
         <LinearLayout
             android:id="@+id/details_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/BookImg"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/Book_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:textSize="@dimen/Large"
                 android:textAllCaps="true"
                 tools:text="Book Name: " />
@@ -123,16 +125,5 @@
                 tools:text="Book preview: "
                 android:autoLink="web" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="powered by Google Books"
-            android:layout_below="@id/details_layout"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="16dp"
-            android:textStyle="italic"
-            android:textSize="10sp" />
     </RelativeLayout>
 </ScrollView>

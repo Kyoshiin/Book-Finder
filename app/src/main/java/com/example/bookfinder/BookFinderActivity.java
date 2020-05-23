@@ -203,8 +203,8 @@ public class BookFinderActivity extends AppCompatActivity
         search_input = search_input.replaceAll("\\s+", "+");
 
         //storing the final url
-        REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=" + mPreference + search_input + "&filter=ebooks&" +
-                "langRestrict=en&printType=books" + mMaxResults;
+        REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=" + mPreference + search_input +
+                "&langRestrict=en&printType=books" + mMaxResults;
 
         Log.v(LOG_TAG, "Input URL " + REQUEST_URL);
     }
@@ -221,6 +221,9 @@ public class BookFinderActivity extends AppCompatActivity
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> books) {
         // Hide loading indicator because the data has been loaded
         loadingIndicator.setVisibility(View.INVISIBLE);
+
+        //to clear adapter after coming back from detailsActivity
+        adapter.clear();
 
         // If there is a valid list of books, then add them to the adapter's
         // data set. This will trigger the ListView to update.

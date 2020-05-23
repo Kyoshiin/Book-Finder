@@ -1,6 +1,7 @@
 package com.example.bookfinder;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +40,16 @@ public class BookAdapter extends ArrayAdapter<Book> {
         TextView authorname = (TextView) listItemView.findViewById(R.id.Authorname);
         authorname.setText(""+currentBook.getBookAuthorName());
 
-        //adding picture
+        //adding picture in the listview
         ImageView bookimage_list = listItemView.findViewById(R.id.BookImage);
-        String imageURL = currentBook.getBookImg();
-        //making http -> https as picasso not http
-        if (imageURL.charAt(4)!= 's')
-            imageURL = imageURL.substring(0,4)+'s'+imageURL.substring(4);
-        Picasso.get().load(imageURL).into(bookimage_list);
+        if (!TextUtils.isEmpty(currentBook.getBookImg())) {
+            String imageURL = currentBook.getBookImg();
 
+            //making http -> https as picasso not http
+            if (imageURL.charAt(4) != 's')
+                imageURL = imageURL.substring(0, 4) + 's' + imageURL.substring(4);
+            Picasso.get().load(imageURL).into(bookimage_list);
+        }
         return listItemView;
     }
 }

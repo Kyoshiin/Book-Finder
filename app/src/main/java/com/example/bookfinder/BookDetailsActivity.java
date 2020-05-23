@@ -31,6 +31,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             //displaying image from url using picasso
             String imageURL = selectd_book.getBookImg();
             //making http -> https as picasso not http
+            //Log.v(LOG_TAG,"Image URL"+imageURL);
             if (imageURL.charAt(4)!= 's')
                 imageURL = imageURL.substring(0,4)+'s'+imageURL.substring(4);
             Picasso.get().load(imageURL).into(bookimage);
