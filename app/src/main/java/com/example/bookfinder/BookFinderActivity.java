@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -254,16 +255,17 @@ public class BookFinderActivity extends AppCompatActivity
         //editing according to url
         if (TextUtils.isEmpty(Preference))
             mPreference = "";
-        else
-            mPreference = "in" + Preference + ":";
+        else {
+            mPreference = "in" + Preference.toLowerCase() + ":";
+            Toast.makeText(getApplicationContext(),"Search Filter: "+Preference,Toast.LENGTH_SHORT).show();
+        }
 
         if (TextUtils.isEmpty(maxresults))
             mMaxResults = "";
         else
             mMaxResults = "&maxResults=" + maxresults;
 
-        //creating a search for exiting search query
-        // with updated preference
+        //creating a search for exiting search query with updated preference
         CreateSearch();
     }
 }

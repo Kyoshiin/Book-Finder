@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,12 +59,12 @@ public class BookDetailsActivity extends AppCompatActivity {
         else
         bookprice.setText("Price: Rs. " +Double.toString(selectd_book.getBookPrice()));
 
-        TextView bookrating = findViewById(R.id.Bookrating);
+        RatingBar bookrating = findViewById(R.id.Bookrating);
         //setting visibility if info not available
         if (selectd_book.getBookRating() == 0.0)
             bookrating.setVisibility(View.GONE);
         else
-            bookrating.setText("Rating: "+ Double.toString(selectd_book.getBookRating())+ " out of 5.0");
+            bookrating.setRating((float)selectd_book.getBookRating());
 
         TextView bookpages = findViewById(R.id.Bookpages);
         //setting visibility if info not available

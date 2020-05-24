@@ -8,48 +8,48 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".BookDetailsActivity"
-        android:padding="8dp">
+        android:padding="8dp"
+        tools:context=".BookDetailsActivity">
 
         <TextView
             android:id="@+id/feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:drawableLeft="@drawable/ic_feedback"
-            android:text=" Send Feedback"
-            android:background="#DCBD84"
-            android:padding="2dp"
-            android:textStyle="bold"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:background="#DCBD84"
+            android:drawableLeft="@drawable/ic_feedback"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text=" Send Feedback"
+            android:textStyle="bold" />
 
-<!--        192 x 248-->
+        <!--        192 x 248-->
         <ImageView
             android:id="@+id/BookImg"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:adjustViewBounds="true"
             android:layout_below="@id/feedback"
             android:layout_centerHorizontal="true"
-
+            android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            tools:src="@drawable/ic_display"/>
+            tools:src="@drawable/ic_display" />
+
+
 
         <LinearLayout
-            android:id="@+id/details_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/BookImg"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/Book_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/Large"
                 android:textAllCaps="true"
+                android:textSize="@dimen/Large"
                 tools:text="Book Name: " />
 
             <TextView
@@ -57,14 +57,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/Small"
+                android:gravity="top"
                 tools:text="Author Name: " />
+
+            <RatingBar
+                android:id="@+id/Bookrating"
+                style="?ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.01"
+                android:progressTint="#ffc107"/>
 
             <TextView
                 android:id="@+id/Bookpublisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="@dimen/Small"
+                android:textSize="@dimen/Medium"
                 tools:text="Book publisher Name: " />
 
             <TextView
@@ -73,22 +85,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="About the book"
-                android:textSize="@dimen/Medium"/>
+                android:textSize="@dimen/Medium" />
 
             <TextView
                 android:id="@+id/Bookdescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/about_box"
                 android:textSize="@dimen/Small"
-                tools:text="Book Description: "
-                android:background="@drawable/about_box"/>
+                tools:text="Book Description: " />
 
             <TextView
                 android:id="@+id/Bookcategories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="@dimen/Small"
+                android:textSize="@dimen/Medium"
                 tools:text="Book category: " />
 
             <TextView
@@ -98,15 +110,6 @@
                 android:layout_marginTop="16dp"
                 android:textSize="@dimen/Small"
                 tools:text="Book pages: " />
-
-            <TextView
-                android:id="@+id/Bookrating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textSize="@dimen/Small"
-                tools:text="Book rating: " />
-
 
             <TextView
                 android:id="@+id/Bookprice"
@@ -121,9 +124,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:autoLink="web"
                 android:textSize="12sp"
-                tools:text="Book preview: "
-                android:autoLink="web" />
+                tools:text="Book preview: " />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

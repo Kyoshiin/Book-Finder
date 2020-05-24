@@ -23,16 +23,14 @@ public class SearchPreferenceDialog extends DialogFragment {
     public static final String RESULTS = "results";
 
     //String array resources
-    private String searchby[] = {"Any","Title","Author","Publisher"};
-    private String resultsNum[] ={"10","5","15","20","30","40"};
+    private String mSearchby[] = {"Any","Title","Author","Publisher"};
+    private String mResultsNum[] ={"10 (Default)","5","15","20","30","40"};
     private Spinner spinnerMaxResults;
     private Spinner spinnerPreference;
     private PreferenceDialogListner listener;
 
-    //variable to store data
-    private String mPreference;
+    //variable to store data position
     private int mPreferenceID;
-    private String mMaxResult;
     private int mMaxResultID;
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -48,43 +46,33 @@ public class SearchPreferenceDialog extends DialogFragment {
 
         //spinner for Title|Author|Publisher
         spinnerPreference = (Spinner) view.findViewById(R.id.prefer_spinner);
-        ArrayAdapter<String> prefAdapter = new ArrayAdapter<>(getActivity(),R.layout.spinner_layout,searchby);
+        ArrayAdapter<String> prefAdapter = new ArrayAdapter<>(getActivity(),R.layout.spinner_layout,mSearchby);
         spinnerPreference.setAdapter(prefAdapter);
         spinnerPreference.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //storing the preference of search
-//                if (position!=0)
-//                    mPreference = parent.getItemAtPosition(position).toString().toLowerCase();
-//
-//                else
-//                    mPreference="";
-
-                mPreferenceID = position; //storing pos of selected data
+                    mPreferenceID = position; //storing pos of selected data
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //mPreference="";
-
             }
         });
 
         //spinner for MaxResults
         spinnerMaxResults = (Spinner) view.findViewById(R.id.maxResult_spinner);
-        ArrayAdapter<String> resultsAdapter = new ArrayAdapter<>(getActivity(),R.layout.spinner_layout,resultsNum);
+        ArrayAdapter<String> resultsAdapter = new ArrayAdapter<>(getActivity(),R.layout.spinner_layout,mResultsNum);
         spinnerMaxResults.setAdapter(resultsAdapter);
         spinnerMaxResults.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //storing the preference of search
-                //mMaxResult = parent.getItemAtPosition(position).toString();
                 mMaxResultID = position;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //mMaxResult="";
             }
         });
 
@@ -102,8 +90,17 @@ public class SearchPreferenceDialog extends DialogFragment {
                 .setPositiveButton("apply", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //listener.setPreference(mPreference, mMaxResult);
-                        listener.setPreference(searchby[mPreferenceID],resultsNum[mMaxResultID]);
+                        String searchpref = mSearchby[mPreferenceID];
+                        String resultsno = mResultsNum[mMaxResultID];
+
+                        if (mPreferenceID==0)//when any is selected
+                            searchpref = "";
+
+                        if (mMaxResultID==0)//when default is selected
+                            resultsno = "";
+
+
+                        listener.setPreference(searchpref,resultsno);
                         savedata(); // to save users data
                     }
                 });
@@ -119,7 +116,7 @@ public class SearchPreferenceDialog extends DialogFragment {
 
     //interface which calling activity must implement
     public interface PreferenceDialogListner {
-        void setPreference(String Preference, String maxresults);
+        void setPreference(String Preference, String Maxresults);
     }
 
     /** MEDTHODS FOR SHARED PREFERENCES **/
